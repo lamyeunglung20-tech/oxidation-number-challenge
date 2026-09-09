@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+  <title>氧化數大挑戰</title>
+  <style>
+    :root {
+      --ink:#27364b; --muted:#64748b; --blue:#2563eb; --blue2:#1746b3;
+      --green:#10b981; --red:#e94f5f; --paper:#fff; --yellow:#f8d75b;
+    }
+    * { box-sizing:border-box; }
+    html { min-width:320px; background:#edf2f8; }
+    body {
+      margin:0; min-height:100vh; color:var(--ink);
+      background:radial-gradient(circle at 10% 0%,rgba(37,99,235,.13),transparent 28rem),radial-gradient(circle at 93% 95%,rgba(16,185,129,.12),transparent 24rem),#f3f4f6;
+      font-family:Arial,"PingFang HK","Noto Sans TC",sans-serif;
+    }
+    button,input,select { font:inherit; }
+    button { cursor:pointer; }
+    .hidden { display:none!important; }
+    .app-shell { min-height:100vh; display:grid; place-items:center; padding:32px 18px; }
+    .card {
+      width:min(920px,100%); overflow:hidden; border:1px solid rgba(255,255,255,.82);
+      border-radius:32px; background:var(--paper); box-shadow:0 30px 80px rgba(38,54,79,.18);
+    }
+    .hero {
+      position:relative; padding:42px 28px 38px; text-align:center; color:#fff;
+      background:linear-gradient(120deg,rgba(255,255,255,.12),transparent 42%),linear-gradient(145deg,#2f7af0,#225acb 65%,#1746b3);
+    }
+    .hero.compact { padding:24px 28px; text-align:left; }
+    .hero-row { display:flex; align-items:center; gap:16px; }
+    .language-button,.home-button {
+      position:absolute; top:22px; right:24px; display:flex; align-items:center; gap:8px;
+      padding:10px 15px; border:1px solid rgba(255,255,255,.52); border-radius:999px;
+      color:#26364a; background:rgba(255,255,255,.95); font-size:14px; font-weight:800;
+      box-shadow:0 5px 18px rgba(19,57,128,.2);
+    }
+    .home-button { position:static; margin-left:auto; }
+    .hero-icon {
+      width:72px; height:72px; margin:0 auto 12px; display:grid; place-items:center;
+      border-radius:22px; color:#163f99; background:var(--yellow); font-size:44px;
+      font-weight:900; transform:rotate(-4deg); box-shadow:0 12px 24px rgba(10,44,113,.25);
+    }
+    .hero-icon.small { width:54px; height:54px; margin:0; font-size:31px; border-radius:17px; }
+    .eyebrow { margin:0 0 7px; font-size:12px; font-weight:900; letter-spacing:.18em; opacity:.82; }
+    .hero h1 { margin:0; font-size:clamp(32px,5vw,48px); line-height:1.15; letter-spacing:.04em; }
+    .hero.compact h1 { font-size:clamp(25px,4vw,34px); }
+    .hero>p:last-child { margin:12px 0 0; font-size:clamp(16px,2.5vw,20px); opacity:.92; }
+    .body { display:grid; gap:24px; padding:30px; }
+    .intro-banner {
+      padding:17px 20px; border-radius:18px; color:#22468c; background:#eef5ff;
+      font-size:17px; font-weight:700; line-height:1.55; text-align:center;
+    }
+    .mode-section h3 { margin:0 0 12px 3px; font-size:17px; }
+    .mode-grid { display:grid; grid-template-columns:1fr 1fr; gap:13px; }
+    .mode-button {
+      padding:16px; border:2px solid #e1e7ef; border-radius:17px; background:#fff;
+      color:#52627a; font-weight:900;
+    }
+    .mode-button.active { color:#fff; border-color:#5b51d8; background:#5b51d8; box-shadow:0 7px 16px rgba(91,81,216,.25); }
+    .action-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+    .action-button {
+      display:flex; align-items:center; gap:14px; min-height:88px; padding:18px; border:0;
+      border-radius:20px; color:#fff; text-align:left; box-shadow:0 10px 22px rgba(41,64,96,.15);
+    }
+    .action-button.notes { background:linear-gradient(135deg,#10b981,#07966b); }
+    .action-button.practice { background:linear-gradient(135deg,#ef5b5b,#d73d52); }
+    .action-emoji { font-size:31px; }
+    .action-button strong,.action-button small { display:block; }
+    .action-button strong { font-size:18px; }
+    .action-button small { margin-top:4px; opacity:.86; font-size:13px; }
+    .content-view { padding:25px 30px 32px; }
+    .notes-grid { display:grid; gap:16px; }
+    .note-block { padding:20px; border:1px solid #e2e8f0; border-radius:20px; background:#fff; }
+    .note-block h3 { display:flex; align-items:center; gap:10px; margin:0 0 12px; font-size:20px; }
+    .note-block p { margin:7px 0; line-height:1.65; }
+    .rule-badge { display:inline-grid; place-items:center; width:30px; height:30px; border-radius:10px; color:#fff; background:var(--green); font-size:14px; }
+    .examples { display:flex; flex-wrap:wrap; gap:9px; margin-top:12px; }
+    .example { padding:9px 12px; border-radius:11px; background:#f3f7fb; font-weight:800; }
+    .note-table-wrap { overflow:auto; border:1px solid #e3e8ef; border-radius:16px; }
+    .note-table { width:100%; border-collapse:collapse; min-width:600px; }
+    .note-table th,.note-table td { padding:13px 14px; border-bottom:1px solid #e8edf3; text-align:left; }
+    .note-table th { color:#516178; background:#f4f7fa; }
+    .note-table tr:last-child td { border-bottom:0; }
+    .equation { padding:12px 15px; border-left:4px solid var(--blue); border-radius:8px; background:#eef5ff; color:#264e91; font-weight:800; }
+    .quiz-wrap { width:min(700px,100%); display:grid; gap:18px; }
+    .quiz-toolbar { display:flex; justify-content:space-between; align-items:center; }
+    .plain-home { padding:10px 14px; border:1px solid #d9e1eb; border-radius:13px; background:#fff; color:#52627a; font-weight:800; }
+    .status-badge { padding:9px 13px; border-radius:12px; background:#dceaff; color:#1b56ad; font-size:14px; font-weight:900; }
+    .question-card { padding:28px; border:1px solid #d8e5f8; border-radius:28px; background:#f0f5ff; text-align:center; box-shadow:0 20px 45px rgba(45,76,125,.14); }
+    .question-number { display:inline-block; padding:6px 11px; border-radius:999px; background:#fff; color:#627087; font-size:13px; font-weight:900; }
+    .question-prompt { margin:14px 0 5px; color:#2563eb; font-weight:900; }
+    .question-text { margin:12px auto 22px; font-size:clamp(22px,5vw,34px); font-weight:900; line-height:1.45; }
+    .options { display:grid; gap:10px; max-width:560px; margin:auto; }
+    .option { padding:14px 16px; border:2px solid #d9e2ee; border-radius:15px; background:#fff; color:#33445b; font-size:17px; font-weight:800; text-align:left; }
+    .option:hover,.option.selected { border-color:#3b82f6; background:#eff6ff; color:#1d4ed8; }
+    .option.correct { border-color:#10b981; background:#dff8ed; color:#06734f; }
+    .option.wrong { border-color:#ef5b67; background:#fee7ea; color:#b42336; }
+    .fill-answer { width:min(360px,100%); padding:14px; border:2px solid #d5deea; border-radius:15px; outline:none; text-align:center; font-size:24px; font-weight:900; }
+    .fill-answer:focus { border-color:#3b82f6; box-shadow:0 0 0 4px rgba(59,130,246,.12); }
+    .feedback { max-width:560px; margin:14px auto 0; padding:13px; border-radius:14px; font-weight:900; }
+    .feedback.good { color:#08744f; background:#dcf8eb; }
+    .feedback.bad { color:#af293a; background:#fee5e9; }
+    .primary-button { width:100%; margin-top:16px; padding:15px 20px; border:0; border-radius:16px; color:#fff; background:var(--blue); font-size:19px; font-weight:900; box-shadow:0 9px 20px rgba(37,99,235,.24); }
+    .primary-button:hover { background:var(--blue2); }
+    .quiz-submit { max-width:560px; }
+    .result-card { padding:34px; text-align:center; }
+    .result-icon { font-size:60px; }
+    .result-card h2 { margin:8px 0 20px; font-size:30px; }
+    .score-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+    .score-box { padding:18px; border-radius:17px; background:#f4f7fa; }
+    .score-box span { display:block; color:#718096; font-size:13px; font-weight:800; }
+    .score-box strong { display:block; margin-top:5px; color:#2563eb; font-size:28px; }
+    .score-box strong.detail-value { font-size:18px; line-height:1.45; }
+    .modal { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:18px; background:rgba(20,31,48,.55); backdrop-filter:blur(5px); }
+    .modal-card { width:min(430px,100%); padding:26px; border-radius:25px; background:#fff; box-shadow:0 25px 70px rgba(13,25,44,.3); }
+    .modal-title { display:flex; justify-content:space-between; align-items:center; }
+    .modal-title h3 { margin:0; font-size:23px; }
+    .close-button { width:38px; height:38px; border:0; border-radius:50%; background:#eef2f6; color:#5c6b7f; font-size:20px; }
+    .count-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:20px 0 12px; }
+    .count-button { padding:13px; border:2px solid #e0e6ee; border-radius:14px; background:#fff; color:#4f6076; font-weight:900; }
+    .count-button.active { color:#fff; border-color:#5b51d8; background:#5b51d8; }
+    .custom-count { display:grid; grid-template-columns:auto 1fr; align-items:center; gap:6px 12px; padding:12px 14px; border:2px solid #e0e6ee; border-radius:14px; color:#4f6076; background:#fff; font-weight:900; }
+    .custom-count input { width:100%; min-width:0; padding:9px 12px; border:2px solid #d7deea; border-radius:10px; outline:none; text-align:center; font-weight:900; }
+    .custom-count input:focus { border-color:#5b51d8; box-shadow:0 0 0 3px rgba(91,81,216,.12); }
+    .custom-count input.invalid { border-color:var(--red); background:#fff4f5; }
+    .custom-count small { grid-column:1/-1; color:#7a899d; font-size:12px; font-weight:700; }
+    .death-button { width:100%; padding:14px; border:0; border-radius:15px; color:#fff; background:#e64758; font-weight:900; }
+    .helper { margin:11px 0 0; color:#718096; font-size:13px; line-height:1.45; }
+    .footer { text-align:center; color:#8090a5; font-size:12px; font-weight:700; }
+    .shake { animation:shake .28s linear; }
+    @keyframes shake { 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+    @media(max-width:700px) {
+      .app-shell { padding:0; place-items:start center; }
+      .card { min-height:100vh; border:0; border-radius:0; }
+      .hero { padding:78px 20px 34px; }
+      .hero.compact { padding:18px; }
+      .language-button { top:18px; right:18px; }
+      .body,.content-view { padding:20px 16px 26px; }
+      .action-grid,.mode-grid,.score-grid { grid-template-columns:1fr; }
+      .hero-row { gap:11px; }
+      .home-button { padding:9px 11px; }
+      .note-table { font-size:14px; }
+    }
+    @media(prefers-reduced-motion:no-preference) {
+      .card { animation:rise .4s ease-out both; }
+      .action-button,.primary-button,.mode-button { transition:transform .2s,filter .2s,background .2s; }
+      .action-button:hover { transform:translateY(-2px); filter:saturate(1.08); }
+      @keyframes rise { from{opacity:0;transform:translateY(12px)} }
+    }
+  </style>
+</head>
+<body>
+  <main class="app-shell">
+    <section id="view-home" class="card">
+      <header class="hero">
+        <button id="language-button" class="language-button" type="button"><span aria-hidden="true">文</span> <span data-i18n="language">English</span></button>
+        <div class="hero-icon" aria-hidden="true">±</div>
+        <p class="eyebrow">CHEMISTRY • OXIDATION STATE</p>
+        <h1 data-i18n="title">氧化數大挑戰</h1>
+        <p data-i18n="subtitle">掌握規則、逐步計算，再用練習鞏固概念。</p>
+      </header>
+      <div class="body">
+        <div class="intro-banner" data-i18n="banner">題庫共有 50 題，涵蓋 HKDSE 氧化數規則、化合物及多原子離子計算。</div>
+        <section class="mode-section"><h3 data-i18n="chooseMode">選擇練習模式</h3><div class="mode-grid"><button class="mode-button active" data-mode="mc" type="button"><span aria-hidden="true">☷</span> <span data-i18n="mc">選擇題</span></button><button class="mode-button" data-mode="fill" type="button"><span aria-hidden="true">✎</span> <span data-i18n="fill">計算填充題</span></button></div></section>
+        <div class="action-grid">
+          <button id="notes-button" class="action-button notes" type="button"><span class="action-emoji" aria-hidden="true">📗</span><span><strong data-i18n="notes">溫習氧化數筆記</strong><small data-i18n="notesSub">規則、例外與完整例子</small></span></button>
+          <button id="practice-button" class="action-button practice" type="button"><span class="action-emoji" aria-hidden="true">🎯</span><span><strong data-i18n="practice">開始課堂練習</strong><small data-i18n="practiceSub">50 題 DSE 範圍題庫</small></span></button>
+        </div>
+        <p class="footer">依照香港中學文憑化學科課程內的氧化數學習要求設計</p>
+      </div>
+    </section>
+
+    <section id="view-notes" class="card hidden">
+      <header class="hero compact"><div class="hero-row"><div class="hero-icon small" aria-hidden="true">📗</div><div><p class="eyebrow">REVISION NOTES</p><h1 data-i18n="notesTitle">氧化數筆記</h1></div><button class="home-button go-home" type="button">⌂ <span data-i18n="home">返回主頁</span></button></div></header>
+      <div class="content-view notes-grid">
+        <article class="note-block"><h3><span class="rule-badge">1</span><span data-i18n="rule1Title">元素的氧化數為 0</span></h3><p data-i18n="rule1Body">未與其他元素化合的元素，不論是單原子或分子，氧化數都是 0。</p><div class="examples"><span class="example">Na：0</span><span class="example">H₂：H = 0</span><span class="example">O₂ / O₃：O = 0</span><span class="example">Cl₂：Cl = 0</span></div></article>
+        <article class="note-block"><h3><span class="rule-badge">2</span><span data-i18n="rule2Title">單原子離子的氧化數等於其電荷</span></h3><div class="examples"><span class="example">Cu²⁺：+2</span><span class="example">Cl⁻：−1</span><span class="example">Al³⁺：+3</span></div></article>
+        <article class="note-block"><h3><span class="rule-badge">3</span><span data-i18n="rule3Title">離子化合物：拆開陽離子和陰離子</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th>化合物</th><th>陽離子</th><th>陰離子</th></tr></thead><tbody><tr><td>NaCl</td><td>Na = +1</td><td>Cl = −1</td></tr><tr><td>K₂O</td><td>K = +1</td><td>O = −2</td></tr><tr><td>MgBr₂</td><td>Mg = +2</td><td>Br = −1</td></tr><tr><td>Al₂O₃</td><td>Al = +3</td><td>O = −2</td></tr></tbody></table></div></article>
+        <article class="note-block"><h3><span class="rule-badge">4</span><span data-i18n="commonRules">化合物中的常用規則</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th>元素</th><th>通常氧化數</th><th>例子／例外</th></tr></thead><tbody><tr><td>第 I 族</td><td><strong>+1</strong></td><td>KOH、NaCl、Li₂O</td></tr><tr><td>第 II 族</td><td><strong>+2</strong></td><td>MgO、MgSO₄、Ca(NO₃)₂</td></tr><tr><td>氫</td><td><strong>+1</strong></td><td>金屬氫化物 NaH 中 H = −1</td></tr><tr><td>氧</td><td><strong>−2</strong></td><td>過氧化物 H₂O₂ 中 O = −1</td></tr></tbody></table></div></article>
+        <article class="note-block"><h3><span class="rule-badge">5</span><span data-i18n="sumRule">氧化數總和規則</span></h3><p>中性化合物：所有原子的氧化數之和 = 0。</p><div class="equation">H₂O：2(+1) + O = 0 → O = −2</div><p>多原子離子：所有原子的氧化數之和 = 離子電荷。</p><div class="equation">PO₄³⁻：P + 4(−2) = −3 → P = +5</div></article>
+        <article class="note-block"><h3><span class="rule-badge">6</span><span data-i18n="workedExamples">常見計算例子</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th>物種</th><th>算式</th><th>答案</th></tr></thead><tbody><tr><td>NO</td><td>N + (−2) = 0</td><td>N = +2</td></tr><tr><td>HNO₃</td><td>(+1) + N + 3(−2) = 0</td><td>N = +5</td></tr><tr><td>SO₄²⁻</td><td>S + 4(−2) = −2</td><td>S = +6</td></tr><tr><td>NO₃⁻</td><td>N + 3(−2) = −1</td><td>N = +5</td></tr><tr><td>MnO₄⁻</td><td>Mn + 4(−2) = −1</td><td>Mn = +7</td></tr><tr><td>Cr₂O₇²⁻</td><td>2Cr + 7(−2) = −2</td><td>Cr = +6</td></tr></tbody></table></div></article>
+      </div>
+    </section>
+
+    <section id="view-quiz" class="quiz-wrap hidden">
+      <div class="quiz-toolbar"><button class="plain-home go-home" type="button">⌂ <span data-i18n="home">返回主頁</span></button><span id="quiz-status" class="status-badge"></span></div>
+      <article id="question-card" class="question-card"><span id="question-number" class="question-number"></span><p id="question-prompt" class="question-prompt"></p><div id="question-text" class="question-text"></div><div id="option-list" class="options"></div><input id="fill-answer" class="fill-answer hidden" inputmode="numeric" autocomplete="off" placeholder="例如 +5"><div id="quiz-feedback" class="feedback hidden" aria-live="polite"></div><button id="quiz-submit" class="primary-button quiz-submit" type="button"><span data-i18n="submit">提交答案</span> →</button></article>
+    </section>
+
+    <section id="view-result" class="card result-card hidden"><div id="result-icon" class="result-icon">🏆</div><h2 id="result-title">挑戰完成！</h2><div class="score-grid"><div class="score-box"><span data-i18n="score">得分</span><strong id="score-value">0 / 0</strong></div><div class="score-box"><span data-i18n="accuracy">正確率</span><strong id="accuracy-value">0%</strong></div><div class="score-box"><span data-i18n="completedAt">完成日期</span><strong id="completed-at-value" class="detail-value">—</strong></div><div class="score-box"><span data-i18n="duration">用時</span><strong id="duration-value" class="detail-value">—</strong></div></div><button class="primary-button go-home" type="button" data-i18n="backHome">返回主頁</button></section>
+  </main>
+
+  <div id="practice-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-heading"><div class="modal-card"><div class="modal-title"><h3 id="modal-heading" data-i18n="questionCount">選擇題數</h3><button id="close-modal" class="close-button" type="button" aria-label="關閉">×</button></div><div class="count-grid"><button class="count-button active" data-count="5">5</button><button class="count-button" data-count="10">10</button><button class="count-button" data-count="all" data-i18n="all">全部 50 題</button></div><label class="custom-count" for="custom-count"><span data-i18n="customCount">自訂題數</span><input id="custom-count" type="number" min="1" max="50" step="1" inputmode="numeric" placeholder="1–50"><small data-i18n="countRange">請輸入 1 至 50 題</small></label><button id="start-training" class="primary-button" type="button">🚀 <span data-i18n="startTraining">開始訓練</span></button><p class="helper" data-i18n="deathHelp">死亡挑戰會使用全部 50 題；累計答錯 5 次便結束。</p><button id="start-death" class="death-button" type="button">💀 <span data-i18n="death">死亡挑戰模式</span></button></div></div>
+
+  <script>
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => Array.from(document.querySelectorAll(selector));
+    const subscriptMap = {"₀":"0","₁":"1","₂":"2","₃":"3","₄":"4","₅":"5","₆":"6","₇":"7","₈":"8","₉":"9"};
+    const groupOne = new Set(["Li","Na","K","Rb","Cs"]);
+    const groupTwo = new Set(["Be","Mg","Ca","Sr","Ba"]);
+    const halogens = new Set(["Cl","Br","I"]);
+    const elementNames = {H:"氫",O:"氧",N:"氮",P:"磷",S:"硫",Mn:"錳",Cr:"鉻",Cl:"氯",Br:"溴",F:"氟",Na:"鈉",K:"鉀",Mg:"鎂",Al:"鋁",Pb:"鉛",V:"釩",Li:"鋰",Ca:"鈣",Fe:"鐵"};
+
+    const translations = {
+      zh: {
+        language:"English",title:"氧化數大挑戰",subtitle:"掌握規則、逐步計算，再用練習鞏固概念。",
+        banner:"題庫共有 50 題，涵蓋 HKDSE 氧化數規則、化合物及多原子離子計算。",
+        quickTool:"快速工具",calculator:"氧化數計算器",formula:"化學式",charge:"物種總電荷",target:"求哪個元素？",
+        peroxide:"過氧化物（O = −1）",hydride:"金屬氫化物（H = −1）",calculate:"開始計算",
+        chooseMode:"選擇練習模式",mc:"選擇題",fill:"計算填充題",notes:"溫習氧化數筆記",
+        notesSub:"規則、例外與完整例子",practice:"開始課堂練習",practiceSub:"50 題 DSE 範圍題庫",
+        notesTitle:"氧化數筆記",home:"返回主頁",rule1Title:"元素的氧化數為 0",
+        rule1Body:"未與其他元素化合的元素，不論是單原子或分子，氧化數都是 0。",
+        rule2Title:"單原子離子的氧化數等於其電荷",rule3Title:"離子化合物：拆開陽離子和陰離子",
+        commonRules:"化合物中的常用規則",sumRule:"氧化數總和規則",workedExamples:"常見計算例子",
+        submit:"提交答案",score:"得分",accuracy:"正確率",completedAt:"完成日期",duration:"用時",backHome:"返回主頁",questionCount:"選擇題數",
+        all:"全部 50 題",customCount:"自訂題數",countRange:"請輸入 1 至 50 題",startTraining:"開始訓練",deathHelp:"死亡挑戰會使用全部 50 題；累計答錯 5 次便結束。",
+        death:"死亡挑戰模式"
+      },
+      en: {
+        language:"中文",title:"Oxidation Number Challenge",subtitle:"Learn the rules, calculate step by step, then strengthen your skills.",
+        banner:"A 50-question bank covering HKDSE oxidation-number rules, compounds and polyatomic ions.",
+        quickTool:"QUICK TOOL",calculator:"Oxidation Number Calculator",formula:"Chemical formula",charge:"Overall charge",target:"Target element",
+        peroxide:"Peroxide (O = −1)",hydride:"Metal hydride (H = −1)",calculate:"Calculate",
+        chooseMode:"Choose practice mode",mc:"Multiple choice",fill:"Calculation questions",notes:"Review notes",
+        notesSub:"Rules, exceptions and examples",practice:"Start class practice",practiceSub:"50 HKDSE-scope questions",
+        notesTitle:"Oxidation Number Notes",home:"Home",rule1Title:"Oxidation number of an element is 0",
+        rule1Body:"An uncombined element has oxidation number 0, whether it is monatomic or molecular.",
+        rule2Title:"A monatomic ion has oxidation number equal to its charge",rule3Title:"Ionic compounds: separate cation and anion",
+        commonRules:"Common rules in compounds",sumRule:"Sum rules",workedExamples:"Worked examples",
+        submit:"Submit",score:"Score",accuracy:"Accuracy",completedAt:"Completed",duration:"Time used",backHome:"Back to home",questionCount:"Number of questions",
+        all:"All 50",customCount:"Custom",countRange:"Enter 1 to 50 questions",startTraining:"Start training",deathHelp:"Death challenge uses all 50 questions and ends after 5 mistakes.",
+        death:"Death challenge"
+      }
+    };
+
+    const specialStates = {
+      "H2O|0":{H:1,O:-2},"HF|0":{H:1,F:-1},"NO|0":{N:2,O:-2},"NO2|0":{N:4,O:-2},
+      "HNO3|0":{H:1,N:5,O:-2},"PO4|-3":{P:5,O:-2},"SO4|-2":{S:6,O:-2},"NO3|-1":{N:5,O:-2},
+      "MnO4|-1":{Mn:7,O:-2},"Cr2O7|-2":{Cr:6,O:-2},"NaCl|0":{Na:1,Cl:-1},"K2O|0":{K:1,O:-2},
+      "MgBr2|0":{Mg:2,Br:-1},"Al2O3|0":{Al:3,O:-2},"NH4|1":{N:-3,H:1},"VO|2":{V:4,O:-2},
+      "PbSO4|0":{Pb:2,S:6,O:-2},"NaClO3|0":{Na:1,Cl:5,O:-2},"KMnO4|0":{K:1,Mn:7,O:-2},
+      "FeCl2|0":{Fe:2,Cl:-1},"NaH|0":{Na:1,H:-1},"H2O2|0":{H:1,O:-1}
+    };
+
+    function normalizeFormula(value) {
+      return String(value || "").split("").map((char) => subscriptMap[char] || char).join("").replace(/[\s·•]/g,"").replace(/\[/g,"(").replace(/\]/g,")");
+    }
+
+    function parseFormula(value) {
+      const formula = normalizeFormula(value);
+      if (!formula) throw new Error("請輸入化學式。");
+      let index = 0;
+      function readNumber() {
+        let digits = "";
+        while (index < formula.length && /[0-9]/.test(formula[index])) digits += formula[index++];
+        return digits ? Number(digits) : 1;
+      }
+      function merge(into, from, multiplier) {
+        Object.keys(from).forEach((key) => { into[key] = (into[key] || 0) + from[key] * multiplier; });
+      }
+      function readGroup(end) {
+        const counts = {};
+        while (index < formula.length && formula[index] !== end) {
+          if (formula[index] === "(") {
+            index++;
+            const nested = readGroup(")");
+            if (formula[index] !== ")") throw new Error("括號未完整配對。");
+            index++;
+            merge(counts,nested,readNumber());
+          } else if (/[A-Z]/.test(formula[index])) {
+            let symbol = formula[index++];
+            if (index < formula.length && /[a-z]/.test(formula[index])) symbol += formula[index++];
+            merge(counts,{[symbol]:1},readNumber());
+          } else {
+            throw new Error("化學式含有不能辨認的符號：「" + formula[index] + "」。");
+          }
+        }
+        return counts;
+      }
+      const counts = readGroup("");
+      if (index !== formula.length || !Object.keys(counts).length) throw new Error("未能辨認這個化學式。");
+      return {formula,counts};
+    }
+
+    function fixedState(element, counts, options) {
+      const elements = Object.keys(counts);
+      if (elements.length === 1 && options.charge === 0) return {value:0,rule:"游離元素的氧化數為 0"};
+      if (elements.length === 1 && options.charge !== 0) return {value:options.charge / counts[element],rule:"單一元素離子的氧化數總和等於離子電荷"};
+      if (groupOne.has(element)) return {value:1,rule:"第 I 族元素通常為 +1"};
+      if (groupTwo.has(element)) return {value:2,rule:"第 II 族元素通常為 +2"};
+      if (element === "Al") return {value:3,rule:"鋁在化合物中通常為 +3"};
+      if (element === "F") return {value:-1,rule:"氟在化合物中為 −1"};
+      if (element === "H") return {value:options.hydride ? -1 : 1,rule:options.hydride ? "金屬氫化物中 H 為 −1" : "H 在一般化合物中為 +1"};
+      if (element === "O") return {value:options.peroxide ? -1 : -2,rule:options.peroxide ? "過氧化物中 O 為 −1" : "O 在一般化合物中為 −2"};
+      if (halogens.has(element) && !counts.O && !counts.F) return {value:-1,rule:"第 VII 族元素在一般二元化合物中為 −1"};
+      return null;
+    }
+
+    function signed(value) {
+      if (Math.abs(value) < 1e-10) return "0";
+      const clean = Number.isInteger(value) ? String(Math.abs(value)) : String(Math.round(Math.abs(value) * 100) / 100);
+      return (value > 0 ? "+" : "−") + clean;
+    }
+
+    function formulaMarkup(formula, charge) {
+      const body = formula.replace(/(\d+)/g,"<sub>$1</sub>");
+      if (!charge) return body;
+      const mag = Math.abs(charge) === 1 ? "" : Math.abs(charge);
+      return body + "<sup>" + mag + (charge > 0 ? "+" : "−") + "</sup>";
+    }
+
+    function calculateOxidation(formulaValue, target, options) {
+      const parsed = parseFormula(formulaValue);
+      const elements = Object.keys(parsed.counts);
+      if (!elements.includes(target)) throw new Error("請選擇化學式內的元素。");
+      const special = specialStates[parsed.formula + "|" + options.charge];
+      const states = {};
+      const rules = {};
+      elements.forEach((element) => {
+        const fixed = fixedState(element,parsed.counts,options);
+        if (fixed) { states[element] = fixed.value; rules[element] = fixed.rule; }
+      });
+      if (special) {
+        Object.keys(special).forEach((element) => {
+          states[element] = special[element];
+          if (!rules[element]) rules[element] = "根據常用氧化數規則及物種總電荷";
+        });
+      }
+      let answer = states[target];
+      const otherUnknown = elements.filter((element) => element !== target && states[element] === undefined);
+      let knownSum = 0;
+      elements.forEach((element) => {
+        if (element !== target && states[element] !== undefined) knownSum += parsed.counts[element] * states[element];
+      });
+      if (answer === undefined) {
+        if (otherUnknown.length) throw new Error("這個物種同時有多個未定氧化數（" + otherUnknown.join("、") + "）。只靠目前規則未能得出唯一答案。");
+        answer = (options.charge - knownSum) / parsed.counts[target];
+        if (!Number.isFinite(answer)) throw new Error("未能完成計算。");
+      }
+      const terms = elements.map((element) => {
+        const value = element === target ? answer : states[element];
+        return parsed.counts[element] + "(" + signed(value) + ")";
+      });
+      const countText = elements.map((element) => element + " × " + parsed.counts[element]).join("，");
+      const applied = elements.filter((element) => rules[element]).map((element) => element + "：" + rules[element] + " → " + signed(states[element]));
+      if (!applied.length) applied.push("利用所有原子的氧化數總和求解");
+      return {
+        formula:parsed.formula,charge:options.charge,counts:parsed.counts,target,answer,
+        steps:[
+          "數出各元素的原子數：" + countText,
+          "套用規則：" + applied.join("；"),
+          "建立總和：" + terms.join(" + ") + " = " + signed(options.charge),
+          (elementNames[target] || target) + "（" + target + "）的氧化數 = " + signed(answer)
+        ]
+      };
+    }
+
+    const questionBank = [
+      {zh:"O₂ 中 O 的氧化數是多少？",en:"What is the oxidation number of O in O₂?",answer:0,why:"O₂ 是游離元素，氧化數為 0。"},
+      {zh:"金屬 Na 中 Na 的氧化數是多少？",en:"What is the oxidation number of Na in sodium metal?",answer:0,why:"未化合的金屬元素氧化數為 0。"},
+      {zh:"Cl₂ 中 Cl 的氧化數是多少？",en:"What is the oxidation number of Cl in Cl₂?",answer:0,why:"Cl₂ 是游離元素，氧化數為 0。"},
+      {zh:"H₂ 中 H 的氧化數是多少？",en:"What is the oxidation number of H in H₂?",answer:0,why:"H₂ 是游離元素，氧化數為 0。"},
+      {zh:"O₃ 中 O 的氧化數是多少？",en:"What is the oxidation number of O in O₃?",answer:0,why:"O₃ 是氧的同素異形體，仍屬游離元素。"},
+      {zh:"Cu²⁺ 中 Cu 的氧化數是多少？",en:"What is the oxidation number of Cu in Cu²⁺?",answer:2,why:"單原子離子的氧化數等於離子電荷。"},
+      {zh:"Cl⁻ 中 Cl 的氧化數是多少？",en:"What is the oxidation number of Cl in Cl⁻?",answer:-1,why:"單原子離子的氧化數等於離子電荷。"},
+      {zh:"Al³⁺ 中 Al 的氧化數是多少？",en:"What is the oxidation number of Al in Al³⁺?",answer:3,why:"單原子離子的氧化數等於離子電荷。"},
+      {zh:"MgBr₂ 中 Mg 的氧化數是多少？",en:"What is the oxidation number of Mg in MgBr₂?",answer:2,why:"Mg 是第 II 族元素，在化合物中為 +2。"},
+      {zh:"MgBr₂ 中 Br 的氧化數是多少？",en:"What is the oxidation number of Br in MgBr₂?",answer:-1,why:"(+2)+2Br=0，所以 Br=−1。"},
+      {zh:"Al₂O₃ 中 Al 的氧化數是多少？",en:"What is the oxidation number of Al in Al₂O₃?",answer:3,why:"2Al+3(−2)=0，所以 Al=+3。"},
+      {zh:"Al₂O₃ 中 O 的氧化數是多少？",en:"What is the oxidation number of O in Al₂O₃?",answer:-2,why:"一般化合物中的氧為 −2。"},
+      {zh:"K₂O 中 K 的氧化數是多少？",en:"What is the oxidation number of K in K₂O?",answer:1,why:"K 是第 I 族元素，在化合物中為 +1。"},
+      {zh:"NaCl 中 Cl 的氧化數是多少？",en:"What is the oxidation number of Cl in NaCl?",answer:-1,why:"(+1)+Cl=0，所以 Cl=−1。"},
+      {zh:"H₂O 中 H 的氧化數是多少？",en:"What is the oxidation number of H in H₂O?",answer:1,why:"一般化合物中的氫為 +1。"},
+      {zh:"H₂O 中 O 的氧化數是多少？",en:"What is the oxidation number of O in H₂O?",answer:-2,why:"2(+1)+O=0，所以 O=−2。"},
+      {zh:"HF 中 F 的氧化數是多少？",en:"What is the oxidation number of F in HF?",answer:-1,why:"氟在化合物中的氧化數為 −1。"},
+      {zh:"NO 中 N 的氧化數是多少？",en:"What is the oxidation number of N in NO?",answer:2,why:"N+(−2)=0，所以 N=+2。"},
+      {zh:"NO₂ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in NO₂?",answer:4,why:"N+2(−2)=0，所以 N=+4。"},
+      {zh:"N₂O₅ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in N₂O₅?",answer:5,why:"2N+5(−2)=0，所以 N=+5。"},
+      {zh:"HNO₃ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in HNO₃?",answer:5,why:"(+1)+N+3(−2)=0，所以 N=+5。"},
+      {zh:"HNO₂ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in HNO₂?",answer:3,why:"(+1)+N+2(−2)=0，所以 N=+3。"},
+      {zh:"NH₃ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in NH₃?",answer:-3,why:"N+3(+1)=0，所以 N=−3。"},
+      {zh:"NH₄⁺ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in NH₄⁺?",answer:-3,why:"N+4(+1)=+1，所以 N=−3。"},
+      {zh:"NO₃⁻ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in NO₃⁻?",answer:5,why:"N+3(−2)=−1，所以 N=+5。"},
+      {zh:"NO₂⁻ 中 N 的氧化數是多少？",en:"What is the oxidation number of N in NO₂⁻?",answer:3,why:"N+2(−2)=−1，所以 N=+3。"},
+      {zh:"SO₄²⁻ 中 S 的氧化數是多少？",en:"What is the oxidation number of S in SO₄²⁻?",answer:6,why:"S+4(−2)=−2，所以 S=+6。"},
+      {zh:"SO₃²⁻ 中 S 的氧化數是多少？",en:"What is the oxidation number of S in SO₃²⁻?",answer:4,why:"S+3(−2)=−2，所以 S=+4。"},
+      {zh:"H₂SO₄ 中 S 的氧化數是多少？",en:"What is the oxidation number of S in H₂SO₄?",answer:6,why:"2(+1)+S+4(−2)=0，所以 S=+6。"},
+      {zh:"SO₂ 中 S 的氧化數是多少？",en:"What is the oxidation number of S in SO₂?",answer:4,why:"S+2(−2)=0，所以 S=+4。"},
+      {zh:"SO₃ 中 S 的氧化數是多少？",en:"What is the oxidation number of S in SO₃?",answer:6,why:"S+3(−2)=0，所以 S=+6。"},
+      {zh:"PO₄³⁻ 中 P 的氧化數是多少？",en:"What is the oxidation number of P in PO₄³⁻?",answer:5,why:"P+4(−2)=−3，所以 P=+5。"},
+      {zh:"H₃PO₄ 中 P 的氧化數是多少？",en:"What is the oxidation number of P in H₃PO₄?",answer:5,why:"3(+1)+P+4(−2)=0，所以 P=+5。"},
+      {zh:"MnO₄⁻ 中 Mn 的氧化數是多少？",en:"What is the oxidation number of Mn in MnO₄⁻?",answer:7,why:"Mn+4(−2)=−1，所以 Mn=+7。"},
+      {zh:"MnO₄²⁻ 中 Mn 的氧化數是多少？",en:"What is the oxidation number of Mn in MnO₄²⁻?",answer:6,why:"Mn+4(−2)=−2，所以 Mn=+6。"},
+      {zh:"MnO₂ 中 Mn 的氧化數是多少？",en:"What is the oxidation number of Mn in MnO₂?",answer:4,why:"Mn+2(−2)=0，所以 Mn=+4。"},
+      {zh:"KMnO₄ 中 Mn 的氧化數是多少？",en:"What is the oxidation number of Mn in KMnO₄?",answer:7,why:"(+1)+Mn+4(−2)=0，所以 Mn=+7。"},
+      {zh:"Cr₂O₇²⁻ 中 Cr 的氧化數是多少？",en:"What is the oxidation number of Cr in Cr₂O₇²⁻?",answer:6,why:"2Cr+7(−2)=−2，所以 Cr=+6。"},
+      {zh:"CrO₄²⁻ 中 Cr 的氧化數是多少？",en:"What is the oxidation number of Cr in CrO₄²⁻?",answer:6,why:"Cr+4(−2)=−2，所以 Cr=+6。"},
+      {zh:"Cr₂O₃ 中 Cr 的氧化數是多少？",en:"What is the oxidation number of Cr in Cr₂O₃?",answer:3,why:"2Cr+3(−2)=0，所以 Cr=+3。"},
+      {zh:"FeO 中 Fe 的氧化數是多少？",en:"What is the oxidation number of Fe in FeO?",answer:2,why:"Fe+(−2)=0，所以 Fe=+2。"},
+      {zh:"Fe₂O₃ 中 Fe 的氧化數是多少？",en:"What is the oxidation number of Fe in Fe₂O₃?",answer:3,why:"2Fe+3(−2)=0，所以 Fe=+3。"},
+      {zh:"NaClO₃ 中 Cl 的氧化數是多少？",en:"What is the oxidation number of Cl in NaClO₃?",answer:5,why:"(+1)+Cl+3(−2)=0，所以 Cl=+5。"},
+      {zh:"Cu₂O 中 Cu 的氧化數是多少？",en:"What is the oxidation number of Cu in Cu₂O?",answer:1,why:"2Cu+(−2)=0，所以 Cu=+1。"},
+      {zh:"PbSO₄ 中 Pb 的氧化數是多少？",en:"What is the oxidation number of Pb in PbSO₄?",answer:2,why:"硫酸根為 SO₄²⁻，因此 Pb 的氧化數為 +2。"},
+      {zh:"H₂O₂ 中 O 的氧化數是多少？",en:"What is the oxidation number of O in H₂O₂?",answer:-1,why:"H₂O₂ 是過氧化物，其中 O 為 −1。"},
+      {zh:"Na₂O₂ 中 O 的氧化數是多少？",en:"What is the oxidation number of O in Na₂O₂?",answer:-1,why:"Na₂O₂ 是過氧化物，其中 O 為 −1。"},
+      {zh:"NaH 中 H 的氧化數是多少？",en:"What is the oxidation number of H in NaH?",answer:-1,why:"NaH 是金屬氫化物，其中 H 為 −1。"},
+      {zh:"CaH₂ 中 H 的氧化數是多少？",en:"What is the oxidation number of H in CaH₂?",answer:-1,why:"CaH₂ 是金屬氫化物，其中 H 為 −1。"},
+      {zh:"VO²⁺ 中 V 的氧化數是多少？",en:"What is the oxidation number of V in VO²⁺?",answer:4,why:"V+(−2)=+2，所以 V=+4。"}
+    ];
+
+    function makeOptions(answer) {
+      const pool = [-3,-2,-1,0,1,2,3,4,5,6,7].filter((value) => value !== answer);
+      return shuffle([answer].concat(shuffle(pool).slice(0,3)));
+    }
+
+    let lang = "zh", quizMode = "mc", selectedCount = 5, questions = [], questionIndex = 0, score = 0, mistakes = 0, selectedOption = null, checked = false, deathMode = false, quizStartedAt = 0, quizFinishedAt = 0;
+
+    function refreshTargets() {
+      try {
+        const parsed = parseFormula($("#formula-input").value);
+        const old = $("#target-select").value;
+        $("#target-select").innerHTML = Object.keys(parsed.counts).map((element) => "<option value=\"" + element + "\">" + (elementNames[element] || element) + "（" + element + "）</option>").join("");
+        if (Object.keys(parsed.counts).includes(old)) $("#target-select").value = old;
+      } catch (_) {
+        $("#target-select").innerHTML = "<option value=\"\">—</option>";
+      }
+    }
+
+    function showCalculation() {
+      const panel = $("#calculation-result");
+      try {
+        const result = calculateOxidation($("#formula-input").value,$("#target-select").value,{
+          charge:Number($("#charge-select").value),peroxide:$("#peroxide-toggle").checked,hydride:$("#hydride-toggle").checked
+        });
+        panel.className = "result-panel";
+        panel.innerHTML = "<div class=\"result-top\"><div class=\"formula-badge formula\">" + formulaMarkup(result.formula,result.charge) + "</div><div class=\"answer\">" + (elementNames[result.target] || result.target) + "（" + result.target + "）<strong>" + signed(result.answer) + "</strong></div></div><ol class=\"steps\">" + result.steps.map((step) => "<li>" + step + "</li>").join("") + "</ol>";
+      } catch (error) {
+        panel.className = "result-panel error-panel";
+        panel.innerHTML = "<strong>未能計算</strong><p>" + error.message + "</p><p class=\"helper\">提示：化學式只需輸入元素和下標；離子電荷請在旁邊選擇。</p>";
+      }
+      panel.classList.remove("hidden");
+    }
+
+    function setExample(button) {
+      $("#formula-input").value = button.dataset.formula;
+      $("#charge-select").value = button.dataset.charge;
+      $("#peroxide-toggle").checked = button.dataset.peroxide === "true";
+      $("#hydride-toggle").checked = button.dataset.formula === "NaH";
+      refreshTargets();
+      const preferred = {HNO3:"N",PO4:"P",MnO4:"Mn",Cr2O7:"Cr",H2O2:"O",MgBr2:"Mg",NaCl:"Na"}[button.dataset.formula];
+      if (preferred) $("#target-select").value = preferred;
+      showCalculation();
+    }
+
+    function showView(name) {
+      ["home","notes","quiz","result"].forEach((view) => $("#view-" + view).classList.toggle("hidden",view !== name));
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function updateLanguage() {
+      const t = translations[lang];
+      $$("[data-i18n]").forEach((node) => { const key = node.dataset.i18n; if (t[key]) node.textContent = t[key]; });
+      document.documentElement.lang = lang === "zh" ? "zh-HK" : "en";
+      document.title = lang === "zh" ? "氧化數大挑戰" : "Oxidation Number Challenge";
+      if (!$("#view-quiz").classList.contains("hidden") && questions.length) renderQuestion();
+    }
+
+    function shuffle(list) {
+      const copy = list.slice();
+      for (let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]];}
+      return copy;
+    }
+
+    function openPracticeModal() {
+      $("#practice-modal").classList.remove("hidden");
+      $("#practice-modal").querySelector(".modal-card").focus?.();
+    }
+
+    function formatDuration(milliseconds, language = lang) {
+      const totalSeconds = Math.max(0,Math.round(milliseconds / 1000));
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return language === "zh" ? minutes + " 分 " + seconds + " 秒" : minutes + " min " + seconds + " sec";
+    }
+
+    function formatCompletedAt(timestamp, language = lang) {
+      const locale = language === "zh" ? "zh-HK" : "en-GB";
+      return new Intl.DateTimeFormat(locale,{year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date(timestamp));
+    }
+
+    function renderResultMeta() {
+      if (!quizStartedAt || !quizFinishedAt) return;
+      $("#completed-at-value").textContent = formatCompletedAt(quizFinishedAt);
+      $("#duration-value").textContent = formatDuration(quizFinishedAt - quizStartedAt);
+    }
+
+    function beginQuiz(isDeath) {
+      deathMode = isDeath;
+      const bank = questionBank;
+      if (!isDeath && $("#custom-count").value !== "") {
+        const customCount = Number($("#custom-count").value);
+        if (!Number.isInteger(customCount) || customCount < 1 || customCount > bank.length) {
+          $("#custom-count").classList.add("invalid");
+          $("#custom-count").focus();
+          return;
+        }
+        selectedCount = customCount;
+      }
+      const count = isDeath ? bank.length : Math.min(selectedCount,bank.length);
+      questions = shuffle(bank).slice(0,count);
+      questionIndex = 0; score = 0; mistakes = 0; checked = false;
+      quizStartedAt = Date.now(); quizFinishedAt = 0;
+      $("#practice-modal").classList.add("hidden");
+      showView("quiz");
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const question = questions[questionIndex];
+      selectedOption = null; checked = false;
+      $("#question-number").textContent = (lang === "zh" ? "第 " : "Question ") + (questionIndex+1) + (lang === "zh" ? " 題" : "") + " / " + questions.length;
+      $("#quiz-status").textContent = deathMode ? "❤️ " + Math.max(0,5-mistakes) + "　•　" + score + " 分" : (lang === "zh" ? "訓練模式" : "Training") + "　•　" + score + " 分";
+      $("#question-prompt").textContent = quizMode === "mc" ? (lang === "zh" ? "選出正確答案" : "Choose the correct answer") : (lang === "zh" ? "填寫氧化數" : "Enter the oxidation number");
+      $("#question-text").textContent = question[lang];
+      $("#quiz-feedback").className = "feedback hidden";
+      $("#quiz-feedback").textContent = "";
+      $("#quiz-submit").innerHTML = "<span>" + translations[lang].submit + "</span> →";
+      if (quizMode === "mc") {
+        const values = makeOptions(question.answer);
+        $("#fill-answer").classList.add("hidden");
+        $("#option-list").classList.remove("hidden");
+        $("#option-list").innerHTML = values.map((value,index) => "<button class=\"option\" data-value=\"" + value + "\" type=\"button\"><strong>" + String.fromCharCode(65+index) + ".</strong> " + signed(value) + "</button>").join("");
+        $$(".option").forEach((button) => button.addEventListener("click",() => {
+          if (checked) return;
+          selectedOption = Number(button.dataset.value);
+          $$(".option").forEach((item) => item.classList.remove("selected"));
+          button.classList.add("selected");
+        }));
+      } else {
+        $("#option-list").classList.add("hidden");
+        $("#fill-answer").classList.remove("hidden");
+        $("#fill-answer").value = "";
+        $("#fill-answer").disabled = false;
+        setTimeout(() => $("#fill-answer").focus(),50);
+      }
+    }
+
+    function submitQuizAnswer() {
+      if (checked) {
+        questionIndex++;
+        if (questionIndex >= questions.length) finishQuiz();
+        else renderQuestion();
+        return;
+      }
+      const question = questions[questionIndex];
+      let correct = false;
+      if (quizMode === "mc") {
+        if (selectedOption === null) {
+          $("#question-card").classList.add("shake"); setTimeout(() => $("#question-card").classList.remove("shake"),300); return;
+        }
+        correct = selectedOption === question.answer;
+        $$(".option").forEach((button) => {
+          const value = Number(button.dataset.value);
+          if (value === question.answer) button.classList.add("correct");
+          else if (value === selectedOption) button.classList.add("wrong");
+          button.disabled = true;
+        });
+      } else {
+        const raw = $("#fill-answer").value.trim().replace(/−/g,"-");
+        if (!raw) { $("#fill-answer").focus(); return; }
+        correct = Number(raw) === question.answer;
+        $("#fill-answer").disabled = true;
+      }
+      checked = true;
+      if (correct) score++; else mistakes++;
+      $("#quiz-feedback").className = "feedback " + (correct ? "good" : "bad");
+      $("#quiz-feedback").textContent = (correct ? "✓ " + (lang === "zh" ? "正確！" : "Correct! ") : "✕ " + (lang === "zh" ? "未正確。" : "Not quite. ")) + question.why;
+      $("#quiz-submit").textContent = lang === "zh" ? "下一題 →" : "Next →";
+      $("#quiz-status").textContent = deathMode ? "❤️ " + Math.max(0,5-mistakes) + "　•　" + score + " 分" : (lang === "zh" ? "訓練模式" : "Training") + "　•　" + score + " 分";
+      if (deathMode && mistakes >= 5) setTimeout(finishQuiz,900);
+    }
+
+    function finishQuiz() {
+      quizFinishedAt = Date.now();
+      const attempted = deathMode && mistakes >= 5 ? questionIndex + 1 : questions.length;
+      const accuracy = attempted ? Math.round(score / attempted * 100) : 0;
+      $("#result-icon").textContent = deathMode && mistakes >= 5 ? "💀" : accuracy >= 80 ? "🏆" : "👍";
+      $("#result-title").textContent = deathMode && mistakes >= 5 ? (lang === "zh" ? "挑戰結束，再試一次！" : "Challenge ended—try again!") : (lang === "zh" ? "挑戰完成！" : "Challenge complete!");
+      $("#score-value").textContent = score + " / " + attempted;
+      $("#accuracy-value").textContent = accuracy + "%";
+      renderResultMeta();
+      showView("result");
+    }
+
+    function initialize() {
+      $("#notes-button").addEventListener("click",() => showView("notes"));
+      $$(".go-home").forEach((button) => button.addEventListener("click",() => showView("home")));
+      $$(".mode-button").forEach((button) => button.addEventListener("click",() => {
+        quizMode = button.dataset.mode; $$(".mode-button").forEach((item) => item.classList.toggle("active",item === button));
+      }));
+      $("#practice-button").addEventListener("click",openPracticeModal);
+      $("#close-modal").addEventListener("click",() => $("#practice-modal").classList.add("hidden"));
+      $("#practice-modal").addEventListener("click",(event) => { if (event.target === $("#practice-modal")) $("#practice-modal").classList.add("hidden"); });
+      $$(".count-button").forEach((button) => button.addEventListener("click",() => {
+        selectedCount = button.dataset.count === "all" ? questionBank.length : Number(button.dataset.count);
+        $("#custom-count").value = "";
+        $("#custom-count").classList.remove("invalid");
+        $$(".count-button").forEach((item) => item.classList.toggle("active",item === button));
+      }));
+      $("#custom-count").addEventListener("input",() => {
+        $("#custom-count").classList.remove("invalid");
+        if ($("#custom-count").value !== "") {
+          $$(".count-button").forEach((item) => item.classList.remove("active"));
+        } else {
+          selectedCount = 5;
+          $$(".count-button").forEach((item,index) => item.classList.toggle("active",index === 0));
+        }
+      });
+      $("#custom-count").addEventListener("keydown",(event) => { if (event.key === "Enter") beginQuiz(false); });
+      $("#start-training").addEventListener("click",() => beginQuiz(false));
+      $("#start-death").addEventListener("click",() => beginQuiz(true));
+      $("#quiz-submit").addEventListener("click",submitQuizAnswer);
+      $("#fill-answer").addEventListener("keydown",(event) => { if (event.key === "Enter") submitQuizAnswer(); });
+      $("#language-button").addEventListener("click",() => { lang = lang === "zh" ? "en" : "zh"; updateLanguage(); renderResultMeta(); });
+      document.addEventListener("keydown",(event) => { if (event.key === "Escape") $("#practice-modal").classList.add("hidden"); });
+    }
+
+    window.OxidationAppTest = {normalizeFormula,parseFormula,calculateOxidation,signed,questionBank,makeOptions,formatDuration,formatCompletedAt};
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded",initialize); else initialize();
+  </script>
+</body>
+</html>
