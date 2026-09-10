@@ -160,7 +160,7 @@
   <main class="app-shell">
     <section id="view-home" class="card">
       <header class="hero">
-        <button id="language-button" class="language-button" type="button"><span aria-hidden="true">文</span> <span data-i18n="language">English</span></button>
+        <button id="language-button" class="language-button" type="button"><span id="language-icon" aria-hidden="true">EN</span> <span data-i18n="language">English</span></button>
         <div class="hero-icon" aria-hidden="true">±</div>
         <p class="eyebrow">CHEMISTRY • OXIDATION STATE</p>
         <h1 data-i18n="title">氧化數大挑戰</h1>
@@ -173,7 +173,7 @@
           <button id="notes-button" class="action-button notes" type="button"><span class="action-emoji" aria-hidden="true">📗</span><span><strong data-i18n="notes">溫習氧化數筆記</strong><small data-i18n="notesSub">規則、例外與完整例子</small></span></button>
           <button id="practice-button" class="action-button practice" type="button"><span class="action-emoji" aria-hidden="true">🎯</span><span><strong data-i18n="practice">開始課堂練習</strong><small data-i18n="practiceSub">50 題 DSE 範圍題庫</small></span></button>
         </div>
-        <p class="footer">依照香港中學文憑化學科課程內的氧化數學習要求設計</p>
+        <p class="footer" data-i18n="footer">依照香港中學文憑化學科課程內的氧化數學習要求設計</p>
       </div>
     </section>
 
@@ -182,16 +182,16 @@
       <div class="content-view notes-grid">
         <article class="note-block"><h3><span class="rule-badge">1</span><span data-i18n="rule1Title">元素的氧化數為 0</span></h3><p data-i18n="rule1Body">未與其他元素化合的元素，不論是單原子或分子，氧化數都是 0。</p><div class="examples"><span class="example">Na：0</span><span class="example">H₂：H = 0</span><span class="example">O₂ / O₃：O = 0</span><span class="example">Cl₂：Cl = 0</span></div></article>
         <article class="note-block"><h3><span class="rule-badge">2</span><span data-i18n="rule2Title">單原子離子的氧化數等於其電荷</span></h3><div class="examples"><span class="example">Cu²⁺：+2</span><span class="example">Cl⁻：−1</span><span class="example">Al³⁺：+3</span></div></article>
-        <article class="note-block"><h3><span class="rule-badge">3</span><span data-i18n="rule3Title">離子化合物：拆開陽離子和陰離子</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th>化合物</th><th>陽離子</th><th>陰離子</th></tr></thead><tbody><tr><td>NaCl</td><td>Na = +1</td><td>Cl = −1</td></tr><tr><td>K₂O</td><td>K = +1</td><td>O = −2</td></tr><tr><td>MgBr₂</td><td>Mg = +2</td><td>Br = −1</td></tr><tr><td>Al₂O₃</td><td>Al = +3</td><td>O = −2</td></tr></tbody></table></div></article>
-        <article class="note-block"><h3><span class="rule-badge">4</span><span data-i18n="commonRules">化合物中的常用規則</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th>元素</th><th>通常氧化數</th><th>例子／例外</th></tr></thead><tbody><tr><td>第 I 族</td><td><strong>+1</strong></td><td>KOH、NaCl、Li₂O</td></tr><tr><td>第 II 族</td><td><strong>+2</strong></td><td>MgO、MgSO₄、Ca(NO₃)₂</td></tr><tr><td>氫</td><td><strong>+1</strong></td><td>金屬氫化物 NaH 中 H = −1</td></tr><tr><td>氧</td><td><strong>−2</strong></td><td>過氧化物 H₂O₂ 中 O = −1</td></tr></tbody></table></div></article>
-        <article class="note-block"><h3><span class="rule-badge">5</span><span data-i18n="sumRule">氧化數總和規則</span></h3><p>中性化合物：所有原子的氧化數之和 = 0。</p><div class="equation">H₂O：2(+1) + O = 0 → O = −2</div><p>多原子離子：所有原子的氧化數之和 = 離子電荷。</p><div class="equation">PO₄³⁻：P + 4(−2) = −3 → P = +5</div></article>
-        <article class="note-block"><h3><span class="rule-badge">6</span><span data-i18n="workedExamples">常見計算例子</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th>物種</th><th>算式</th><th>答案</th></tr></thead><tbody><tr><td>NO</td><td>N + (−2) = 0</td><td>N = +2</td></tr><tr><td>HNO₃</td><td>(+1) + N + 3(−2) = 0</td><td>N = +5</td></tr><tr><td>SO₄²⁻</td><td>S + 4(−2) = −2</td><td>S = +6</td></tr><tr><td>NO₃⁻</td><td>N + 3(−2) = −1</td><td>N = +5</td></tr><tr><td>MnO₄⁻</td><td>Mn + 4(−2) = −1</td><td>Mn = +7</td></tr><tr><td>Cr₂O₇²⁻</td><td>2Cr + 7(−2) = −2</td><td>Cr = +6</td></tr></tbody></table></div></article>
+        <article class="note-block"><h3><span class="rule-badge">3</span><span data-i18n="rule3Title">離子化合物：拆開陽離子和陰離子</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th data-i18n="compound">化合物</th><th data-i18n="cation">陽離子</th><th data-i18n="anion">陰離子</th></tr></thead><tbody><tr><td>NaCl</td><td>Na = +1</td><td>Cl = −1</td></tr><tr><td>K₂O</td><td>K = +1</td><td>O = −2</td></tr><tr><td>MgBr₂</td><td>Mg = +2</td><td>Br = −1</td></tr><tr><td>Al₂O₃</td><td>Al = +3</td><td>O = −2</td></tr></tbody></table></div></article>
+        <article class="note-block"><h3><span class="rule-badge">4</span><span data-i18n="commonRules">化合物中的常用規則</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th data-i18n="element">元素</th><th data-i18n="usualOxidation">通常氧化數</th><th data-i18n="examplesExceptions">例子／例外</th></tr></thead><tbody><tr><td data-i18n="groupOne">第 I 族</td><td><strong>+1</strong></td><td>KOH, NaCl, Li₂O</td></tr><tr><td data-i18n="groupTwo">第 II 族</td><td><strong>+2</strong></td><td>MgO, MgSO₄, Ca(NO₃)₂</td></tr><tr><td data-i18n="hydrogen">氫</td><td><strong>+1</strong></td><td data-i18n="hydrideException">金屬氫化物 NaH 中 H = −1</td></tr><tr><td data-i18n="oxygen">氧</td><td><strong>−2</strong></td><td data-i18n="peroxideException">過氧化物 H₂O₂ 中 O = −1</td></tr></tbody></table></div></article>
+        <article class="note-block"><h3><span class="rule-badge">5</span><span data-i18n="sumRule">氧化數總和規則</span></h3><p data-i18n="neutralSum">中性化合物：所有原子的氧化數之和 = 0。</p><div class="equation">H₂O: 2(+1) + O = 0 → O = −2</div><p data-i18n="ionSum">多原子離子：所有原子的氧化數之和 = 離子電荷。</p><div class="equation">PO₄³⁻: P + 4(−2) = −3 → P = +5</div></article>
+        <article class="note-block"><h3><span class="rule-badge">6</span><span data-i18n="workedExamples">常見計算例子</span></h3><div class="note-table-wrap"><table class="note-table"><thead><tr><th data-i18n="species">物種</th><th data-i18n="calculation">算式</th><th data-i18n="answer">答案</th></tr></thead><tbody><tr><td>NO</td><td>N + (−2) = 0</td><td>N = +2</td></tr><tr><td>HNO₃</td><td>(+1) + N + 3(−2) = 0</td><td>N = +5</td></tr><tr><td>SO₄²⁻</td><td>S + 4(−2) = −2</td><td>S = +6</td></tr><tr><td>NO₃⁻</td><td>N + 3(−2) = −1</td><td>N = +5</td></tr><tr><td>MnO₄⁻</td><td>Mn + 4(−2) = −1</td><td>Mn = +7</td></tr><tr><td>Cr₂O₇²⁻</td><td>2Cr + 7(−2) = −2</td><td>Cr = +6</td></tr></tbody></table></div></article>
       </div>
     </section>
 
     <section id="view-quiz" class="quiz-wrap hidden">
       <div class="quiz-toolbar"><button class="plain-home go-home" type="button">⌂ <span data-i18n="home">返回主頁</span></button><span id="quiz-status" class="status-badge"></span></div>
-      <article id="question-card" class="question-card"><span id="question-number" class="question-number"></span><p id="question-prompt" class="question-prompt"></p><div id="question-text" class="question-text"></div><div id="option-list" class="options"></div><div id="fill-controls" class="answer-entry hidden"><button class="sign-button" data-sign="+" type="button" aria-label="正數">＋</button><input id="fill-answer" class="fill-answer" inputmode="numeric" autocomplete="off" placeholder="例如 +5"><button class="sign-button" data-sign="−" type="button" aria-label="負數">−</button></div><div id="quiz-feedback" class="feedback hidden" aria-live="polite"></div><button id="quiz-submit" class="primary-button quiz-submit" type="button"><span data-i18n="submit">提交答案</span> →</button></article>
+      <article id="question-card" class="question-card"><span id="question-number" class="question-number"></span><p id="question-prompt" class="question-prompt"></p><div id="question-text" class="question-text"></div><div id="option-list" class="options"></div><div id="fill-controls" class="answer-entry hidden"><button id="positive-sign" class="sign-button" data-sign="+" type="button" aria-label="正數">＋</button><input id="fill-answer" class="fill-answer" inputmode="numeric" autocomplete="off" placeholder="例如 +5"><button id="negative-sign" class="sign-button" data-sign="−" type="button" aria-label="負數">−</button></div><div id="quiz-feedback" class="feedback hidden" aria-live="polite"></div><button id="quiz-submit" class="primary-button quiz-submit" type="button"><span data-i18n="submit">提交答案</span> →</button></article>
     </section>
 
     <section id="view-result" class="card result-card hidden"><div id="result-icon" class="result-icon">🏆</div><h2 id="result-title">挑戰完成！</h2><div class="score-grid"><div class="score-box"><span data-i18n="score">得分</span><strong id="score-value">0 / 0</strong></div><div class="score-box"><span data-i18n="accuracy">正確率</span><strong id="accuracy-value">0%</strong></div><div class="score-box"><span data-i18n="completedAt">完成日期</span><strong id="completed-at-value" class="detail-value">—</strong></div><div class="score-box"><span data-i18n="duration">用時</span><strong id="duration-value" class="detail-value">—</strong></div></div><button class="primary-button go-home" type="button" data-i18n="backHome">返回主頁</button></section>
@@ -220,12 +220,15 @@
         rule1Body:"未與其他元素化合的元素，不論是單原子或分子，氧化數都是 0。",
         rule2Title:"單原子離子的氧化數等於其電荷",rule3Title:"離子化合物：拆開陽離子和陰離子",
         commonRules:"化合物中的常用規則",sumRule:"氧化數總和規則",workedExamples:"常見計算例子",
+        compound:"化合物",cation:"陽離子",anion:"陰離子",element:"元素",usualOxidation:"通常氧化數",examplesExceptions:"例子／例外",
+        groupOne:"第 I 族",groupTwo:"第 II 族",hydrogen:"氫",oxygen:"氧",hydrideException:"金屬氫化物 NaH 中 H = −1",peroxideException:"過氧化物 H₂O₂ 中 O = −1",
+        neutralSum:"中性化合物：所有原子的氧化數之和 = 0。",ionSum:"多原子離子：所有原子的氧化數之和 = 離子電荷。",species:"物種",calculation:"算式",answer:"答案",
         submit:"提交答案",score:"得分",accuracy:"正確率",completedAt:"完成日期",duration:"用時",backHome:"返回主頁",questionCount:"選擇題數",
         all:"全部 50 題",customCount:"自訂題數",countRange:"請輸入 1 至 50 題",startTraining:"開始訓練",deathHelp:"死亡挑戰會使用全部 50 題；累計答錯 5 次便結束。",
-        death:"死亡挑戰模式"
+        death:"死亡挑戰模式",footer:"依照香港中學文憑化學科課程內的氧化數學習要求設計"
       },
       en: {
-        language:"中文",title:"Oxidation Number Challenge",subtitle:"Learn the rules, calculate step by step, then strengthen your skills.",
+        language:"Chinese",title:"Oxidation Number Challenge",subtitle:"Learn the rules, calculate step by step, then strengthen your skills.",
         banner:"A 50-question bank covering HKDSE oxidation-number rules, compounds and polyatomic ions.",
         quickTool:"QUICK TOOL",calculator:"Oxidation Number Calculator",formula:"Chemical formula",charge:"Overall charge",target:"Target element",
         peroxide:"Peroxide (O = −1)",hydride:"Metal hydride (H = −1)",calculate:"Calculate",
@@ -234,10 +237,13 @@
         notesTitle:"Oxidation Number Notes",home:"Home",rule1Title:"Oxidation number of an element is 0",
         rule1Body:"An uncombined element has oxidation number 0, whether it is monatomic or molecular.",
         rule2Title:"A monatomic ion has oxidation number equal to its charge",rule3Title:"Ionic compounds: separate cation and anion",
-        commonRules:"Common rules in compounds",sumRule:"Sum rules",workedExamples:"Worked examples",
+        commonRules:"Common rules in compounds",sumRule:"Oxidation-number sum rules",workedExamples:"Worked examples",
+        compound:"Compound",cation:"Cation",anion:"Anion",element:"Element",usualOxidation:"Usual oxidation number",examplesExceptions:"Examples / exceptions",
+        groupOne:"Group I",groupTwo:"Group II",hydrogen:"Hydrogen",oxygen:"Oxygen",hydrideException:"H = −1 in the metal hydride NaH",peroxideException:"O = −1 in the peroxide H₂O₂",
+        neutralSum:"Neutral compound: the sum of the oxidation numbers of all atoms is 0.",ionSum:"Polyatomic ion: the sum of the oxidation numbers of all atoms equals the ionic charge.",species:"Species",calculation:"Calculation",answer:"Answer",
         submit:"Submit",score:"Score",accuracy:"Accuracy",completedAt:"Completed",duration:"Time used",backHome:"Back to home",questionCount:"Number of questions",
         all:"All 50",customCount:"Custom",countRange:"Enter 1 to 50 questions",startTraining:"Start training",deathHelp:"Death challenge uses all 50 questions and ends after 5 mistakes.",
-        death:"Death challenge"
+        death:"Death challenge",footer:"Designed for the oxidation-number requirements of the HKDSE Chemistry curriculum"
       }
     };
 
@@ -416,6 +422,28 @@
       {zh:"VO²⁺ 中 V 的氧化數是多少？",en:"What is the oxidation number of V in VO²⁺?",answer:4,why:"V+(−2)=+2，所以 V=+4。"}
     ];
 
+    const questionExplanationTranslations = {
+      "O₂ 是游離元素，氧化數為 0。":"O₂ is a free element, so its oxidation number is 0.",
+      "未化合的金屬元素氧化數為 0。":"An uncombined metal has oxidation number 0.",
+      "Cl₂ 是游離元素，氧化數為 0。":"Cl₂ is a free element, so its oxidation number is 0.",
+      "H₂ 是游離元素，氧化數為 0。":"H₂ is a free element, so its oxidation number is 0.",
+      "O₃ 是氧的同素異形體，仍屬游離元素。":"O₃ is an allotrope of oxygen and is still a free element.",
+      "單原子離子的氧化數等於離子電荷。":"The oxidation number of a monatomic ion equals its ionic charge.",
+      "Mg 是第 II 族元素，在化合物中為 +2。":"Mg is a Group II element, so its oxidation number in compounds is +2.",
+      "一般化合物中的氧為 −2。":"Oxygen usually has oxidation number −2 in compounds.",
+      "K 是第 I 族元素，在化合物中為 +1。":"K is a Group I element, so its oxidation number in compounds is +1.",
+      "一般化合物中的氫為 +1。":"Hydrogen usually has oxidation number +1 in compounds.",
+      "氟在化合物中的氧化數為 −1。":"Fluorine has oxidation number −1 in compounds.",
+      "硫酸根為 SO₄²⁻，因此 Pb 的氧化數為 +2。":"The sulfate ion is SO₄²⁻, so Pb has oxidation number +2.",
+      "H₂O₂ 是過氧化物，其中 O 為 −1。":"H₂O₂ is a peroxide, in which O has oxidation number −1.",
+      "Na₂O₂ 是過氧化物，其中 O 為 −1。":"Na₂O₂ is a peroxide, in which O has oxidation number −1.",
+      "NaH 是金屬氫化物，其中 H 為 −1。":"NaH is a metal hydride, in which H has oxidation number −1.",
+      "CaH₂ 是金屬氫化物，其中 H 為 −1。":"CaH₂ is a metal hydride, in which H has oxidation number −1."
+    };
+    questionBank.forEach((question) => {
+      question.whyEn = questionExplanationTranslations[question.why] || question.why.replace("，所以 ", ", so ").replace(/。$/, ".");
+    });
+
     function makeOptions(answer) {
       const pool = [-3,-2,-1,0,1,2,3,4,5,6,7].filter((value) => value !== answer);
       return shuffle([answer].concat(shuffle(pool).slice(0,3)));
@@ -470,7 +498,13 @@
       $$("[data-i18n]").forEach((node) => { const key = node.dataset.i18n; if (t[key]) node.textContent = t[key]; });
       document.documentElement.lang = lang === "zh" ? "zh-HK" : "en";
       document.title = lang === "zh" ? "氧化數大挑戰" : "Oxidation Number Challenge";
-      if (!$("#view-quiz").classList.contains("hidden") && questions.length) renderQuestion();
+      $("#language-icon").textContent = lang === "zh" ? "EN" : "ZH";
+      $("#fill-answer").placeholder = lang === "zh" ? "例如 +5" : "e.g. +5";
+      $("#positive-sign").setAttribute("aria-label",lang === "zh" ? "正數" : "Positive sign");
+      $("#negative-sign").setAttribute("aria-label",lang === "zh" ? "負數" : "Negative sign");
+      $("#close-modal").setAttribute("aria-label",lang === "zh" ? "關閉" : "Close");
+      if (!$("#view-quiz").classList.contains("hidden") && questions.length) updateCurrentQuestionLanguage();
+      if (!$("#view-result").classList.contains("hidden")) updateResultLanguage();
     }
 
     function shuffle(list) {
@@ -528,16 +562,53 @@
       renderQuestion();
     }
 
+    function pointsText(value) {
+      return lang === "zh" ? value + " 分" : value + " pts";
+    }
+
+    function updateQuizStatus() {
+      $("#quiz-status").textContent = deathMode
+        ? "❤️ " + Math.max(0,5-mistakes) + "　•　" + pointsText(score)
+        : (lang === "zh" ? "訓練模式" : "Training") + "　•　" + pointsText(score);
+    }
+
+    function feedbackText(question, correct) {
+      const lead = correct
+        ? (lang === "zh" ? "✓ 正確！" : "✓ Correct! ")
+        : (lang === "zh" ? "✕ 未正確。" : "✕ Not quite. ");
+      return lead + (lang === "zh" ? question.why : question.whyEn);
+    }
+
+    function updateCurrentQuestionLanguage() {
+      const question = questions[questionIndex];
+      if (!question) return;
+      $("#question-number").textContent = (lang === "zh" ? "第 " : "Question ") + (questionIndex+1) + (lang === "zh" ? " 題" : "") + " / " + questions.length;
+      updateQuizStatus();
+      $("#question-prompt").textContent = quizMode === "mc" ? (lang === "zh" ? "選出正確答案" : "Choose the correct answer") : (lang === "zh" ? "填寫氧化數" : "Enter the oxidation number");
+      $("#question-text").textContent = question[lang];
+      if (checked) {
+        const correct = $("#quiz-feedback").classList.contains("good");
+        $("#quiz-feedback").textContent = feedbackText(question,correct);
+        $("#quiz-submit").textContent = lang === "zh" ? "下一題 →" : "Next →";
+      } else {
+        $("#quiz-submit").innerHTML = "<span>" + translations[lang].submit + "</span> →";
+      }
+    }
+
+    function updateResultLanguage() {
+      if (!quizFinishedAt) return;
+      $("#result-title").textContent = deathMode && mistakes >= 5
+        ? (lang === "zh" ? "挑戰結束，再試一次！" : "Challenge ended—try again!")
+        : (lang === "zh" ? "挑戰完成！" : "Challenge complete!");
+      renderResultMeta();
+    }
+
     function renderQuestion() {
       const question = questions[questionIndex];
       selectedOption = null; checked = false;
-      $("#question-number").textContent = (lang === "zh" ? "第 " : "Question ") + (questionIndex+1) + (lang === "zh" ? " 題" : "") + " / " + questions.length;
-      $("#quiz-status").textContent = deathMode ? "❤️ " + Math.max(0,5-mistakes) + "　•　" + score + " 分" : (lang === "zh" ? "訓練模式" : "Training") + "　•　" + score + " 分";
-      $("#question-prompt").textContent = quizMode === "mc" ? (lang === "zh" ? "選出正確答案" : "Choose the correct answer") : (lang === "zh" ? "填寫氧化數" : "Enter the oxidation number");
-      $("#question-text").textContent = question[lang];
       $("#quiz-feedback").className = "feedback hidden";
       $("#quiz-feedback").textContent = "";
-      $("#quiz-submit").innerHTML = "<span>" + translations[lang].submit + "</span> →";
+      updateCurrentQuestionLanguage();
       if (quizMode === "mc") {
         const values = makeOptions(question.answer);
         $("#fill-controls").classList.add("hidden");
@@ -589,9 +660,9 @@
       checked = true;
       if (correct) score++; else mistakes++;
       $("#quiz-feedback").className = "feedback " + (correct ? "good" : "bad");
-      $("#quiz-feedback").textContent = (correct ? "✓ " + (lang === "zh" ? "正確！" : "Correct! ") : "✕ " + (lang === "zh" ? "未正確。" : "Not quite. ")) + question.why;
+      $("#quiz-feedback").textContent = feedbackText(question,correct);
       $("#quiz-submit").textContent = lang === "zh" ? "下一題 →" : "Next →";
-      $("#quiz-status").textContent = deathMode ? "❤️ " + Math.max(0,5-mistakes) + "　•　" + score + " 分" : (lang === "zh" ? "訓練模式" : "Training") + "　•　" + score + " 分";
+      updateQuizStatus();
       if (deathMode && mistakes >= 5) setTimeout(finishQuiz,900);
     }
 
@@ -600,10 +671,9 @@
       const attempted = deathMode && mistakes >= 5 ? questionIndex + 1 : questions.length;
       const accuracy = attempted ? Math.round(score / attempted * 100) : 0;
       $("#result-icon").textContent = deathMode && mistakes >= 5 ? "💀" : accuracy >= 80 ? "🏆" : "👍";
-      $("#result-title").textContent = deathMode && mistakes >= 5 ? (lang === "zh" ? "挑戰結束，再試一次！" : "Challenge ended—try again!") : (lang === "zh" ? "挑戰完成！" : "Challenge complete!");
       $("#score-value").textContent = score + " / " + attempted;
       $("#accuracy-value").textContent = accuracy + "%";
-      renderResultMeta();
+      updateResultLanguage();
       showView("result");
     }
 
